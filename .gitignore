@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# 模型檔（體積大，從 MediaPipe 官方下載）
+models/
+
+# 執行輸出（CSV、影片）
+outputs/
+
+# 開發工具
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
