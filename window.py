@@ -72,6 +72,13 @@ class SlidingWindow:
         self._buffer: deque[tuple[int, dict | None]] = deque()
         self._next_output_ts: int | None = None   # 下一次該輸出視窗的時間戳
         self._start_ts: int | None = None          # 第一幀的時間戳（_trim 後 earliest_ts 會變動，需另行記錄）
+        self._last_produced: bool = False          # 上次 feed() 是否產生了視窗（有效或無效均算）
+
+    @property
+    def last_produced(self) -> bool:
+        """上次 feed() 呼叫是否恰好產生了一個視窗（有效或無效均算）。
+        主要供 judge 只在視窗邊界更新，而非每幀都更新。"""
+        return self._last_produced
 
     # ------------------------------------------------------------------ #
     def feed(self, timestamp_ms: int, features: dict | None) -> dict | None:
@@ -79,6 +86,8 @@ class SlidingWindow:
         餵入一幀，回傳視窗特徵 dict 或 None。
         features 為 None 表示該幀無效（遮擋 / 關鍵點不足），仍需放入緩衝。
         """
+        self._last_produced = False   # 每次 feed 先重設
+
         if self._start_ts is None:
             self._start_ts = timestamp_ms
 
@@ -97,6 +106,7 @@ class SlidingWindow:
             return None
 
         self._next_output_ts = timestamp_ms + config.WINDOW_STRIDE_MS
+        self._last_produced = True    # 本次確實產生了視窗（不論有效無效）
         return self._compute_window()
 
     # ------------------------------------------------------------------ #
@@ -147,3 +157,4 @@ class SlidingWindow:
         self._buffer.clear()
         self._next_output_ts = None
         self._start_ts = None
+        self._last_produced = False

@@ -69,5 +69,13 @@ FONT_PATH_MAC = "/System/Library/Fonts/PingFang.ttc"
 import platform as _platform
 FONT_PATH = FONT_PATH_WIN if _platform.system() == "Windows" else FONT_PATH_MAC
 
+# ---------- 判定機制（M3） ----------
+# 連續 N 個有效視窗相同預測 → 判定成立
+CONFIRM_WINDOWS = 3
+# 機率需超過此門檻才計入連續計數（規則法固定 1.0；ML 分類器用）
+PROB_THRESHOLD = 0.7
+# 判定成立後在畫面顯示大字提示的持續時間（毫秒）
+CONFIRM_DISPLAY_MS = 1000
+
 # ---------- 分類器切換（預留給 M6 ML 分類器） ----------
 CLASSIFIER = "rule"          # "rule" | "ml"
