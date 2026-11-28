@@ -21,6 +21,8 @@ MIN_TRACKING_CONFIDENCE = 0.5
 # ---------- 特徵 ----------
 # 關鍵點 visibility 低於此值就視為「沒拍到」，該幀不計算特徵
 VISIBILITY_THRESHOLD = 0.5
+# 腳踝專用門檻（筆電鏡頭俯角導致腳踝 confidence 偏低，單獨放寬）
+ANKLE_VISIBILITY_THRESHOLD = 0.2
 # 肩寬（像素）小於此值視為偵測異常，避免除以極小值
 MIN_SHOULDER_WIDTH_PX = 20
 
@@ -48,17 +50,17 @@ MIN_VALID_RATIO = 0.7        # 視窗內有效幀比例低於此值 → 該視�
 JUMP_RISE = 0.25             # hip_rise_max 超過此值才算跳起來
 JUMP_RANGE = 0.35            # hip_rise_max - hip_rise_min 超過此值才算跳起落下
 # 蹲下
-SQUAT_DROP = -0.5            # hip_rise_mean 低於此值（髖部比站立低 0.5 個肩寬）
+SQUAT_DROP = -0.3            # hip_rise_mean 低於此值（髖部比站立低 0.3 個肩寬）
 # 手臂判定
 ARM_RAISED_MIN = 25          # 肩角 >= 此值才算舉起
 ELBOW_STRAIGHT_MIN = 140     # 肘角 >= 此值才算手臂打直
 ARM_STABLE_STD = 12          # 肩角 std <= 此值才算維持住（不是在移動中）
 # 角度分界（45/90/135/180 四級）
-ARM_ANGLE_BOUNDARIES = (67.5, 112.5, 157.5)
+ARM_ANGLE_BOUNDARIES = (67.5, 112.5, 145.0)
 
 # ---------- classify 模式監控（M2） ----------
 # 當前肩寬與校正基準相差超過此比例 → 提示「請回到原位」且不輸出預測
-SHOULDER_WIDTH_DRIFT_RATIO = 0.15
+SHOULDER_WIDTH_DRIFT_RATIO = 0.25
 
 # ---------- 字型（classify 模式中文 HUD；M4 遊戲畫面沿用） ----------
 # Windows：微軟正黑體；macOS：蘋方；找不到時 put_text_pil 退回英文

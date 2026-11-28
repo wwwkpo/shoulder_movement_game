@@ -54,8 +54,9 @@ def calculate_angle(a, vertex, c):
 def check_visibility(landmarks, threshold=None):
     """回傳 visibility 不足的關鍵點名稱清單；空清單代表全部看得到。"""
     threshold = config.VISIBILITY_THRESHOLD if threshold is None else threshold
+    ankle_threshold = config.ANKLE_VISIBILITY_THRESHOLD
     return [name for name, idx in REQUIRED_POINTS.items()
-            if landmarks[idx, 3] < threshold]
+            if landmarks[idx, 3] < (ankle_threshold if "ankle" in name else threshold)]
 
 
 def compute_frame_features(landmarks):
